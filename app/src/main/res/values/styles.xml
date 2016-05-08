@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/midnight_dark</item>
         <item name="colorPrimaryDark">@color/midnight_darker</item>
         <item name="colorAccent">@color/blue</item>
+        <item name="android:fontFamily">monospace</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,4 +18,13 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TextStyle">
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TextStyle.Body">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>
