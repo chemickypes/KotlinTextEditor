@@ -8,10 +8,11 @@ import android.os.Parcelable
  * Created by angelomoroni on 08/05/16.
  */
 data class Note (var title: String,
-                 var body: String,
+                 var body: String = "",
                  var creatTime: Long = System.currentTimeMillis(),
-                 var lastModTime: Long = System.currentTimeMillis()) : Parcelable {
-    constructor(source: Parcel): this(source.readString(), source.readString(), source.readLong(), source.readLong())
+                 var lastModTime: Long = System.currentTimeMillis(),
+                 var id: Int = -1) : Parcelable {
+    constructor(source: Parcel): this(source.readString(), source.readString(), source.readLong(), source.readLong(), source.readInt())
 
     override fun describeContents(): Int {
         return 0
@@ -22,6 +23,7 @@ data class Note (var title: String,
         dest?.writeString(body)
         dest?.writeLong(creatTime)
         dest?.writeLong(lastModTime)
+        dest?.writeInt(id)
     }
 
     companion object {
