@@ -82,7 +82,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createNote(title1: Editable?,title2:String){
-        var n : Note = Note(title1?.toString() ?: title2)
+        var ti :String = if(title1!!.length > 0) title1.toString() else title2
+        var n : Note = Note(ti)
         var i : Intent = Intent(this,NoteActivity::class.java)
         i.putExtra(NOTE_KEY,n)
         startActivityForResult(i,NOTE_DETAIL_ACTIVITY_REQUEST)
