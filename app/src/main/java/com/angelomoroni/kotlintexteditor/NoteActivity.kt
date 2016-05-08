@@ -51,13 +51,9 @@ class NoteActivity : AppCompatActivity() {
     }
 
     private fun saveNote() {
-        if(note == null){
-            note = Note(titlenote.text.toString(),bodynote.text.toString())
-        }else{
-            note!!.title = titlenote.text.toString()
-            note!!.body = bodynote.text.toString()
-            note!!.lastModTime = System.currentTimeMillis()
-        }
+        note!!.title = titlenote.text.toString()
+        note!!.body = bodynote.text.toString()
+        note!!.lastModTime = System.currentTimeMillis()
 
         var intent : Intent = Intent()
         intent.putExtra(NOTE_KEY,note)
