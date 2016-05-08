@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">KotlinTextEditor</string>
+    <string name="app_name">K TextEditor</string>
     <string name="action_settings">Save</string>
     <string name="choose_title">Choose note title</string>
     <string name="create_note">Create</string>
     <string name="cancel">Cancel</string>
-    <string name="body_hint">Body...</string>
+    <string name="body_hint">Body…</string>
 </resources>
