@@ -18,7 +18,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="TextStyle">
+    <style name="TextStyle" >
         <item name="android:fontFamily">monospace</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
@@ -31,5 +31,11 @@
     <style name="TextStyle.Title">
         <item name="android:textColor">@color/orange</item>
         <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="ToolbarStyle" >
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textColor">@color/sand_dark</item>
+        <item name="android:textSize">25sp</item>
     </style>
 </resources>
