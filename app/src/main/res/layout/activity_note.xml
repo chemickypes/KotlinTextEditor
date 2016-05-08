@@ -38,6 +38,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/titlenote"
                 android:layout_gravity="center_horizontal"
+                android:lines="1"
+                android:ellipsize="end"
                 style="@style/TextStyle.Title.EditText" />
 
             <EditText
