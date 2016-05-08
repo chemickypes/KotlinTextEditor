@@ -5,12 +5,14 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.View
 import android.view.Menu
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
+import android.widget.Toast
+import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
+import com.angelomoroni.kotlintexteditor.models.Note
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +26,10 @@ class MainActivity : AppCompatActivity() {
         fab?.setOnClickListener({ view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() })
 
-        list.layoutManager = LinearLayoutManager(this)
+        val list = findViewById(R.id.list) as RecyclerView?
+        list?.layoutManager = LinearLayoutManager(this)
+        list?.adapter = NoteAdapter(getFakeNoteList(),
+                {n: Note -> toast(n.title)})
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,5 +50,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    fun getFakeNoteList() : List<Note>{
+        var list = ArrayList<Note>();
+        for (i in 1..5){
+            list.add(Note("Note Title ${i}","Body text ${i}"))
+        }
+
+        return list
+    }
+
+    fun AppCompatActivity.toast(messge: String, l: Int = Toast.LENGTH_SHORT){
+        Toast.makeText(this,messge,l).show()
     }
 }

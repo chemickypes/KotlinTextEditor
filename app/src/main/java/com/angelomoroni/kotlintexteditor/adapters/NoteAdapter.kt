@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.angelomoroni.kotlintexteditor.R
 import com.angelomoroni.kotlintexteditor.models.Note
 import kotlinx.android.synthetic.main.note_item_row.view.*
