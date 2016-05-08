@@ -49,7 +49,10 @@
                 android:ems="10"
                 android:id="@+id/bodynote"
                 android:layout_gravity="center_horizontal"
-                style="@style/TextStyle.Body.EditText"/>
+                android:hint="@string/body_hint"
+                style="@style/TextStyle.Body.EditText">
+                <requestFocus />
+                </EditText>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
