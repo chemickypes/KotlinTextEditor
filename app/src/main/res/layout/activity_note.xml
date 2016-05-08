@@ -36,7 +36,7 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/title"
+                android:id="@+id/titlenote"
                 android:layout_gravity="center_horizontal"
                 style="@style/TextStyle.Title.EditText"
                 android:text="hola"/>
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/body"
+                android:id="@+id/bodynote"
                 android:layout_gravity="center_horizontal"
                 style="@style/TextStyle.Body.EditText"
                 android:text="tutot"/>
