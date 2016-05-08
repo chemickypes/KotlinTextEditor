@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun openInputDialog() {
         var v = LayoutInflater.from(this).inflate(R.layout.input_dialog_layout,null);
-        var alertDialogBuilder : AlertDialog.Builder = AlertDialog.Builder(this)
+        var alertDialogBuilder : AlertDialog.Builder = AlertDialog.Builder(this,R.style.DialogTheme)
         alertDialogBuilder.setView(v)
 
         val input : EditText = v.findViewById(R.id.new_title) as EditText

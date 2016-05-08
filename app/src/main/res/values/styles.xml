@@ -43,6 +43,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="DialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:background">@color/midnight_dark</item>
+    </style>
+
 
     <style name="ToolbarStyle" >
         <item name="android:fontFamily">monospace</item>
