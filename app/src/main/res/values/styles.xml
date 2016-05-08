@@ -44,4 +44,16 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">22sp</item>
     </style>
+
+    <style name="TextStyle.Title.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="TextStyle.Body.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:padding">16dp</item>
+    </style>
 </resources>
