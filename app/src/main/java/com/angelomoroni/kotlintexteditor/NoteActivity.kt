@@ -18,6 +18,7 @@ class NoteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_note)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
 
         note = intent.getParcelableExtra(NOTE_KEY)
 

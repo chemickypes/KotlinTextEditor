@@ -38,8 +38,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/titlenote"
                 android:layout_gravity="center_horizontal"
-                style="@style/TextStyle.Title.EditText"
-                android:text="hola"/>
+                style="@style/TextStyle.Title.EditText" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -48,8 +47,7 @@
                 android:ems="10"
                 android:id="@+id/bodynote"
                 android:layout_gravity="center_horizontal"
-                style="@style/TextStyle.Body.EditText"
-                android:text="tutot"/>
+                style="@style/TextStyle.Body.EditText"/>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
