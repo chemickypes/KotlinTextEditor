@@ -1,5 +1,7 @@
 package com.angelomoroni.kotlintexteditor
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -11,10 +13,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
+import com.angelomoroni.kotlintexteditor.models.NOTE_DETAIL_ACTIVITY
+import com.angelomoroni.kotlintexteditor.models.NOTE_DETAIL_ACTIVITY_REQUEST
+import com.angelomoroni.kotlintexteditor.models.NOTE_KEY
 import com.angelomoroni.kotlintexteditor.models.Note
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    var noteAdapter : NoteAdapter = NoteAdapter(getFakeNoteList(),
+            {n: Note -> toast(n.title)
+                updateNote(n)})
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,35 +39,33 @@ class MainActivity : AppCompatActivity() {
 
         val list = findViewById(R.id.list) as RecyclerView?
         list?.layoutManager = LinearLayoutManager(this)
-        list?.adapter = NoteAdapter(getFakeNoteList(),
-                {n: Note -> toast(n.title)
-                updateNote(n)})
+
+        list?.adapter = noteAdapter
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true
+        if(resultCode == Activity.RESULT_OK
+        && requestCode == NOTE_DETAIL_ACTIVITY_REQUEST){
+            var n : Note = data?.getParcelableExtra<Note>(NOTE_KEY) as Note
+            if (n.id == -1){
+                noteAdapter.add(n)
+            }else{
+                noteAdapter.replace(n)
+            }
+            noteAdapter.notifyDataSetChanged()
         }
-
-        return super.onOptionsItemSelected(item)
     }
 
-    fun getFakeNoteList() : List<Note>{
+
+
+    fun getFakeNoteList() : ArrayList<Note>{
         var list = ArrayList<Note>();
         for (i in 1..5){
-            list.add(Note("Note Title ${i}","Body text ${i}"))
+            var n: Note = Note("Note Title ${i}","Body text ${i}")
+            n.id = i
+            list.add(n)
         }
 
         return list
@@ -73,5 +80,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateNote(n : Note){
+        var i : Intent = Intent(this,NoteActivity::class.java)
+        i.putExtra(NOTE_KEY,n);
+        startActivityForResult(i,NOTE_DETAIL_ACTIVITY_REQUEST)
     }
 }
