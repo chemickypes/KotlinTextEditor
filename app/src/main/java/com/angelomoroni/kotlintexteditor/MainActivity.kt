@@ -44,7 +44,9 @@ class MainActivity : AppCompatActivity() {
     fun getFakeNoteList() : List<Note>{
         var list = ArrayList<Note>();
         for (i in 1..5){
-            list.add(Note("Note Title ${i}","Body text ${i}"))
+            var n: Note = Note("Note Title ${i}","Body text ${i}")
+            n.id = i
+            list.add(n)
         }
 
         return list
