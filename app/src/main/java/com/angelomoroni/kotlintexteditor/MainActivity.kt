@@ -24,12 +24,15 @@ class MainActivity : AppCompatActivity() {
 
         val fab = findViewById(R.id.fab) as FloatingActionButton?
         fab?.setOnClickListener({ view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() })
+            createNote() })
+
+        // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
 
         val list = findViewById(R.id.list) as RecyclerView?
         list?.layoutManager = LinearLayoutManager(this)
         list?.adapter = NoteAdapter(getFakeNoteList(),
-                {n: Note -> toast(n.title)})
+                {n: Note -> toast(n.title)
+                updateNote(n)})
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,5 +66,12 @@ class MainActivity : AppCompatActivity() {
 
     fun AppCompatActivity.toast(messge: String, l: Int = Toast.LENGTH_SHORT){
         Toast.makeText(this,messge,l).show()
+    }
+
+    fun createNote(){
+
+    }
+
+    fun updateNote(n : Note){
     }
 }
