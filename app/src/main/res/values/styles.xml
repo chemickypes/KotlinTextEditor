@@ -27,4 +27,9 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="TextStyle.Title">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">22sp</item>
+    </style>
 </resources>
