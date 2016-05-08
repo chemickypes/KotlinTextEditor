@@ -38,6 +38,12 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="TextStyle.SubTitle">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
     <style name="ToolbarStyle" >
         <item name="android:fontFamily">monospace</item>
         <item name="android:textColor">@color/sand_dark</item>
