@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.angelomoroni.kotlintexteditor.R
+import com.angelomoroni.kotlintexteditor.models.FormatDate
 import com.angelomoroni.kotlintexteditor.models.Note
 import kotlinx.android.synthetic.main.note_item_row.view.*
 
@@ -34,6 +35,7 @@ class NoteAdapter (val items : List<Note>, val itemClick : (Note) -> Unit)
         fun bind(note : Note){
             with(note){
                 itemView.text.text = note.title
+                itemView.date.text = FormatDate.getSubTitleRow(note.lastModTime)
                 itemView.setOnClickListener { itemClick(this) }
             }
         }
