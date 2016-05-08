@@ -1,6 +1,8 @@
 package com.angelomoroni.kotlintexteditor
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -9,14 +11,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.text.Editable
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
 import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
-import com.angelomoroni.kotlintexteditor.models.NOTE_DETAIL_ACTIVITY
-import com.angelomoroni.kotlintexteditor.models.NOTE_DETAIL_ACTIVITY_REQUEST
-import com.angelomoroni.kotlintexteditor.models.NOTE_KEY
-import com.angelomoroni.kotlintexteditor.models.Note
+import com.angelomoroni.kotlintexteditor.models.*
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -76,7 +78,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createNote(){
+        openInputDialog()
+    }
 
+    fun createNote(title1: Editable?,title2:String){
+        var n : Note = Note(title1?.toString() ?: title2)
+        var i : Intent = Intent(this,NoteActivity::class.java)
+        i.putExtra(NOTE_KEY,n)
+        startActivityForResult(i,NOTE_DETAIL_ACTIVITY_REQUEST)
+    }
+
+    private fun openInputDialog() {
+        var v = LayoutInflater.from(this).inflate(R.layout.input_dialog_layout,null);
+        var alertDialogBuilder : AlertDialog.Builder = AlertDialog.Builder(this,R.style.DialogTheme)
+        alertDialogBuilder.setView(v)
+
+        val input : EditText = v.findViewById(R.id.new_title) as EditText
+        input.hint = FormatDate.getHint()
+
+        alertDialogBuilder.setPositiveButton(R.string.create_note,
+                { d : DialogInterface,id: Int -> createNote(input.text,FormatDate.getHint()) })
+        alertDialogBuilder.setNegativeButton(R.string.cancel,{
+            d:DialogInterface,id:Int -> //noting
+        })
+
+        alertDialogBuilder.create().show()
     }
 
     fun updateNote(n : Note){

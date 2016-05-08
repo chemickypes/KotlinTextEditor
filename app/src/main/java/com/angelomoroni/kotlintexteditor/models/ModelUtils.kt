@@ -8,6 +8,14 @@ import java.util.*
  */
 
 object FormatDate {
+
+    fun getHint():String {
+        var cTime :Calendar = Calendar.getInstance()
+
+        var formatter : SimpleDateFormat = SimpleDateFormat("hh:mm:ss dd-MM-yyyy")
+        return "note" + formatter.format(cTime.time)
+    }
+
     fun getSubTitleRow(date: Long) : String {
 
         var cTime :Calendar = Calendar.getInstance()

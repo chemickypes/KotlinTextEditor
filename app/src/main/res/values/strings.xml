@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">KotlinTextEditor</string>
     <string name="action_settings">Save</string>
+    <string name="choose_title">Choose note title</string>
+    <string name="create_note">Create</string>
+    <string name="cancel">Cancel</string>
 </resources>
