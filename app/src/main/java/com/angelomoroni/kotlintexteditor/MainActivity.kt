@@ -1,5 +1,6 @@
 package com.angelomoroni.kotlintexteditor
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -11,6 +12,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
+import com.angelomoroni.kotlintexteditor.models.NOTE_DETAIL_ACTIVITY
+import com.angelomoroni.kotlintexteditor.models.NOTE_DETAIL_ACTIVITY_REQUEST
+import com.angelomoroni.kotlintexteditor.models.NOTE_KEY
 import com.angelomoroni.kotlintexteditor.models.Note
 import java.util.*
 
@@ -73,5 +77,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun updateNote(n : Note){
+        var i : Intent = Intent(this,NoteActivity::class.java)
+        i.putExtra(NOTE_KEY,n);
+        startActivityForResult(i,NOTE_DETAIL_ACTIVITY_REQUEST)
     }
 }
