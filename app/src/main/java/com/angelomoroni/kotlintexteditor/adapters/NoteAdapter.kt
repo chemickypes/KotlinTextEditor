@@ -8,11 +8,12 @@ import com.angelomoroni.kotlintexteditor.R
 import com.angelomoroni.kotlintexteditor.models.FormatDate
 import com.angelomoroni.kotlintexteditor.models.Note
 import kotlinx.android.synthetic.main.note_item_row.view.*
+import java.util.*
 
 /**
  * Created by angelomoroni on 08/05/16.
  */
-class NoteAdapter (val items : List<Note>, val itemClick : (Note) -> Unit)
+class NoteAdapter (val items : ArrayList<Note>, val itemClick : (Note) -> Unit)
 : RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
@@ -37,6 +38,21 @@ class NoteAdapter (val items : List<Note>, val itemClick : (Note) -> Unit)
                 itemView.text.text = note.title
                 itemView.date.text = FormatDate.getSubTitleRow(note.lastModTime)
                 itemView.setOnClickListener { itemClick(this) }
+            }
+        }
+    }
+
+    fun add(n: Note?) {
+        n?.id = itemCount
+        items.add(n as Note)
+    }
+
+    fun replace (n: Note){
+        for(note in items){
+            if( note.id == n.id){
+                note.title = n.title
+                note.body = n.body
+                note.lastModTime = n.lastModTime
             }
         }
     }

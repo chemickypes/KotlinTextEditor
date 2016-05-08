@@ -17,7 +17,7 @@ class NoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
         setSupportActionBar(toolbar)
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         note = intent.getParcelableExtra(NOTE_KEY)
 
@@ -41,7 +41,7 @@ class NoteActivity : AppCompatActivity() {
         if (id == R.id.action_save) {
             saveNote();
             return true
-        }else if(id == R.id.home){
+        }else if(id == android.R.id.home){
             setResult(Activity.RESULT_CANCELED)
             finish()
             return true

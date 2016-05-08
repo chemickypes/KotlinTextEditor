@@ -1,5 +1,6 @@
 package com.angelomoroni.kotlintexteditor
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -20,6 +21,10 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    var noteAdapter : NoteAdapter = NoteAdapter(getFakeNoteList(),
+            {n: Note -> toast(n.title)
+                updateNote(n)})
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,14 +39,28 @@ class MainActivity : AppCompatActivity() {
 
         val list = findViewById(R.id.list) as RecyclerView?
         list?.layoutManager = LinearLayoutManager(this)
-        list?.adapter = NoteAdapter(getFakeNoteList(),
-                {n: Note -> toast(n.title)
-                updateNote(n)})
+
+        list?.adapter = noteAdapter
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK
+        && requestCode == NOTE_DETAIL_ACTIVITY_REQUEST){
+            var n : Note = data?.getParcelableExtra<Note>(NOTE_KEY) as Note
+            if (n.id == -1){
+                noteAdapter.add(n)
+            }else{
+                noteAdapter.replace(n)
+            }
+            noteAdapter.notifyDataSetChanged()
+        }
     }
 
 
 
-    fun getFakeNoteList() : List<Note>{
+    fun getFakeNoteList() : ArrayList<Note>{
         var list = ArrayList<Note>();
         for (i in 1..5){
             var n: Note = Note("Note Title ${i}","Body text ${i}")
