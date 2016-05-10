@@ -13,8 +13,9 @@ import java.util.*
 /**
  * Created by angelomoroni on 08/05/16.
  */
-class NoteAdapter (val items : ArrayList<Note>, val itemClick : (Note) -> Unit)
+class NoteAdapter (val itemClick : (Note) -> Unit,val items : ArrayList<Note> = ArrayList())
 : RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.bind(items[position])

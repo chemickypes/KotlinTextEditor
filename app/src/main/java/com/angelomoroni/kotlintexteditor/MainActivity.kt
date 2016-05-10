@@ -1,11 +1,14 @@
 package com.angelomoroni.kotlintexteditor
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,9 +23,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var noteAdapter : NoteAdapter = NoteAdapter(getFakeNoteList(),
-            {n: Note ->
-                updateNote(n)})
+    var noteAdapter : NoteAdapter = NoteAdapter({n: Note -> updateNote(n)})
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,42 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val READ_STORAGE_PERMISSION_CODE: Int = 120
+
+    override fun onResume() {
+        super.onResume()
+
+        if(checkSelfPermission( Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+            if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+                 //show a message to explain because it's importat get this permission
+            }else{
+                //show permission
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),READ_STORAGE_PERMISSION_CODE)
+            }
+        }else{
+            //call list of note
+            loadListOfNote()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            READ_STORAGE_PERMISSION_CODE  -> {
+                if (grantResults.size > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    loadListOfNote()
+                }else{
+                    toast("We can't load notes")
+                }}
+        }
+
+    }
+
+    private fun loadListOfNote() {
+
+    }
 
 
     fun getFakeNoteList() : ArrayList<Note>{
