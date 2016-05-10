@@ -78,7 +78,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createNote(){
-        openInputDialog()
+        //openInputDialog()
+        var n : Note = Note(FormatDate.getHint())
+        var i : Intent = Intent(this,NoteActivity::class.java)
+        i.putExtra(NOTE_KEY,n)
+        startActivityForResult(i,NOTE_DETAIL_ACTIVITY_REQUEST)
     }
 
     fun createNote(title1: Editable?,title2:String){
