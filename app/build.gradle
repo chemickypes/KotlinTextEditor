@@ -10,8 +10,8 @@ android {
         applicationId "com.angelomoroni.kotlintexteditor"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 4
-        versionName "0.3.2"
+        versionCode 5
+        versionName "0.4"
     }
     buildTypes {
         release {
