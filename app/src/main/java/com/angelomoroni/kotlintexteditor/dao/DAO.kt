@@ -14,21 +14,21 @@ import java.io.File
 
 val NOTE_STORAGE :String = "KTextEditorDir"
 
-fun getListNote() : Observable<Note>{
+fun getListNote() : Observable<Note?>{
     return Observable.defer { Observable.from(getListoFromExternalStorage())}
 }
 
-fun getListoFromExternalStorage(): Array<Note>? {
+fun getListoFromExternalStorage(): Array<Note?>? {
 
-    var listNote :Array<Note>? = null
+    var listNote :Array<Note?>? = null
 
     var folder : File = File(Environment.getExternalStorageDirectory().getAbsoluteFile(), NOTE_STORAGE)
     if(folder.mkdirs()||folder.isDirectory()){
         Log.d("TAGAGA",folder.absolutePath)
         var listFile = folder.listFiles()
 
-        listNote = Array<Note>(listFile?.size ?: 0,
-                { i -> getNote(listFile[i].readText()) })
+        listNote = Array<Note?>(listFile?.size ?: 0,
+                { i -> if(listFile[i].isFile)getNote(listFile[i].readText()) else null})
     }
     return listNote;
 }

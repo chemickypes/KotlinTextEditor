@@ -110,15 +110,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadListOfNote() {
-        /*getListNote().
-                subscribeOn(Schedulers.newThread())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(
-                {n -> noteAdapter.add(n)},
-                { e -> toast("Error"); e.printStackTrace() },
-                { noteAdapter.notifyDataSetChanged();
-                    snack(getString(R.string.empty_list),{createNote()},"ADD NOTE")}
-        )*/
+        if(noteAdapter.itemCount == 0) {
+            getListNote().
+                    subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .filter { n : Note? -> n != null }
+                    .subscribe(
+                            { n -> noteAdapter.add(n) },
+                            { e -> toast("Error"); e.printStackTrace() },
+                            {
+                                noteAdapter.notifyDataSetChanged();
+                                snack(getString(R.string.empty_list), { createNote() }, "ADD NOTE")
+                            }
+                    )
+        }
     }
 
 
