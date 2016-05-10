@@ -24,7 +24,6 @@ fun getListoFromExternalStorage(): Array<Note?>? {
 
     var folder : File = File(Environment.getExternalStorageDirectory().getAbsoluteFile(), NOTE_STORAGE)
     if(folder.mkdirs()||folder.isDirectory()){
-        Log.d("TAGAGA",folder.absolutePath)
         var listFile = folder.listFiles()
 
         listNote = Array<Note?>(listFile?.size ?: 0,
@@ -46,7 +45,6 @@ fun saveNoteOnExternalStorage(n: Note): Note {
     var folder : File = File(Environment.getExternalStorageDirectory().getAbsoluteFile(), NOTE_STORAGE)
     folder.mkdirs()
     var an = folder.absolutePath + File.separator + n.title;
-    Log.d("SAVE FILE",an)
     var file : File = File(an)
     if(!file.exists()){
         file.createNewFile()
