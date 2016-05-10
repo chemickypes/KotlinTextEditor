@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
 import com.angelomoroni.kotlintexteditor.dao.getListNote
 import com.angelomoroni.kotlintexteditor.models.*
+import kotlinx.android.synthetic.main.activity_main.*
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import java.util.*
@@ -101,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         .subscribe(
                 {n -> noteAdapter.add(n)},
                 { e -> toast("Error"); e.printStackTrace() },
-                {toast("List is Loaded"); noteAdapter.notifyDataSetChanged()}
+                { noteAdapter.notifyDataSetChanged();snack(getString(R.string.empty_list))}
         )
     }
 
@@ -115,6 +117,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         return list
+    }
+
+    fun AppCompatActivity.snack(message: String){
+        Snackbar.make(fab,message,Snackbar.LENGTH_LONG).
+                setAction("Add Note",{createNote()}).show()
     }
 
     fun AppCompatActivity.toast(messge: String, l: Int = Toast.LENGTH_SHORT){

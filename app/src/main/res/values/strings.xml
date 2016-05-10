@@ -5,4 +5,5 @@
     <string name="create_note">Create</string>
     <string name="cancel">Cancel</string>
     <string name="body_hint">Body…</string>
+    <string name="empty_list">Empty list! Click here to add first note!</string>
 </resources>
