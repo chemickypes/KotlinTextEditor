@@ -10,8 +10,8 @@ android {
         applicationId "com.angelomoroni.kotlintexteditor"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 3
-        versionName "0.3.1"
+        versionCode 5
+        versionName "0.4"
     }
     buildTypes {
         release {
@@ -30,6 +30,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'io.reactivex:rxandroid:1.2.0'
+    compile 'io.reactivex:rxjava:1.1.4'
+    compile 'com.google.code.gson:gson:2.6.2'
 }
 buildscript {
     ext.kotlin_version = '1.0.1-2'

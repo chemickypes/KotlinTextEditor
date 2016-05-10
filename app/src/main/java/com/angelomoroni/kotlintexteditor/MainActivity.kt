@@ -1,31 +1,36 @@
 package com.angelomoroni.kotlintexteditor
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
+import com.angelomoroni.kotlintexteditor.dao.getListNote
+import com.angelomoroni.kotlintexteditor.dao.saveNote
 import com.angelomoroni.kotlintexteditor.models.*
+import kotlinx.android.synthetic.main.activity_main.*
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    var noteAdapter : NoteAdapter = NoteAdapter(getFakeNoteList(),
-            {n: Note -> toast(n.title)
-                updateNote(n)})
+    var noteAdapter : NoteAdapter = NoteAdapter({n: Note -> updateNote(n)})
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +62,69 @@ class MainActivity : AppCompatActivity() {
                 noteAdapter.replace(n)
             }
             noteAdapter.notifyDataSetChanged()
+
+            save(n);
+
         }
     }
 
+    private fun save(n: Note) {
+        saveNote(n)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        .subscribe({n -> snack(getString(R.string.note_saved))},
+                { e -> e.printStackTrace(); snack(getString(R.string.error_note_saved))})
+    }
+
+    private val READ_STORAGE_PERMISSION_CODE: Int = 120
+
+    override fun onResume() {
+        super.onResume()
+
+        if(checkSelfPermission( Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                 //show a message to explain because it's importat get this permission
+            }else{
+                //show permission
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),READ_STORAGE_PERMISSION_CODE)
+            }
+        }else{
+            //call list of note
+            loadListOfNote()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            READ_STORAGE_PERMISSION_CODE  -> {
+                if (grantResults.size > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    loadListOfNote()
+                }else{
+                    toast("We can't load notes")
+                }}
+        }
+
+    }
+
+    private fun loadListOfNote() {
+        if(noteAdapter.itemCount == 0) {
+            getListNote().
+                    subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .filter { n : Note? -> n != null }
+                    .subscribe(
+                            { n -> noteAdapter.add(n) },
+                            { e -> toast("Error"); e.printStackTrace() },
+                            {
+                                noteAdapter.notifyDataSetChanged();
+                                if(noteAdapter.itemCount == 0)snack(getString(R.string.empty_list), { createNote() }, "ADD NOTE")
+                            }
+                    )
+        }
+    }
 
 
     fun getFakeNoteList() : ArrayList<Note>{
@@ -71,6 +136,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         return list
+    }
+
+    fun AppCompatActivity.snack(message: String,action: (v: View)  -> Unit = {},actionName: String = ""){
+        Snackbar.make(fab,message,Snackbar.LENGTH_LONG).
+                setAction(actionName,action).show()
     }
 
     fun AppCompatActivity.toast(messge: String, l: Int = Toast.LENGTH_SHORT){

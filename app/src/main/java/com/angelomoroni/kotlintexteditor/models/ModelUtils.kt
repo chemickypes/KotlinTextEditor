@@ -12,8 +12,8 @@ object FormatDate {
     fun getHint():String {
         var cTime :Calendar = Calendar.getInstance()
 
-        var formatter : SimpleDateFormat = SimpleDateFormat("hh:mm dd/MM")
-        return "note " + formatter.format(cTime.time)
+        var formatter : SimpleDateFormat = SimpleDateFormat("hh_mm_dd_MM")
+        return "note_" + formatter.format(cTime.time)
     }
 
     fun getSubTitleRow(date: Long) : String {
