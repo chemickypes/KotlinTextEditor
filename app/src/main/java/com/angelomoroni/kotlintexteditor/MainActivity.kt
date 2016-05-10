@@ -16,10 +16,12 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
 import com.angelomoroni.kotlintexteditor.dao.getListNote
+import com.angelomoroni.kotlintexteditor.dao.saveNote
 import com.angelomoroni.kotlintexteditor.models.*
 import kotlinx.android.synthetic.main.activity_main.*
 import rx.android.schedulers.AndroidSchedulers
@@ -60,7 +62,18 @@ class MainActivity : AppCompatActivity() {
                 noteAdapter.replace(n)
             }
             noteAdapter.notifyDataSetChanged()
+
+            save(n);
+
         }
+    }
+
+    private fun save(n: Note) {
+        saveNote(n)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        .subscribe({n -> snack(getString(R.string.note_saved))},
+                { e -> e.printStackTrace(); snack(getString(R.string.error_note_saved))})
     }
 
     private val READ_STORAGE_PERMISSION_CODE: Int = 120
@@ -103,7 +116,8 @@ class MainActivity : AppCompatActivity() {
         .subscribe(
                 {n -> noteAdapter.add(n)},
                 { e -> toast("Error"); e.printStackTrace() },
-                { noteAdapter.notifyDataSetChanged();snack(getString(R.string.empty_list))}
+                { noteAdapter.notifyDataSetChanged();
+                    snack(getString(R.string.empty_list),{createNote()},"ADD NOTE")}
         )
     }
 
@@ -119,9 +133,9 @@ class MainActivity : AppCompatActivity() {
         return list
     }
 
-    fun AppCompatActivity.snack(message: String){
+    fun AppCompatActivity.snack(message: String,action: (v: View)  -> Unit = {},actionName: String = ""){
         Snackbar.make(fab,message,Snackbar.LENGTH_LONG).
-                setAction("Add Note",{createNote()}).show()
+                setAction(actionName,action).show()
     }
 
     fun AppCompatActivity.toast(messge: String, l: Int = Toast.LENGTH_SHORT){

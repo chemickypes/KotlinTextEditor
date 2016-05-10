@@ -6,4 +6,7 @@
     <string name="cancel">Cancel</string>
     <string name="body_hint">Body…</string>
     <string name="empty_list">Empty list! Click here to add first note!</string>
+    <string name="note_saved">Note saved!</string>
+    <string name="error_note_saved">Error! Note not saved!</string>
+
 </resources>

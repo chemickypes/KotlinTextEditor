@@ -1,5 +1,6 @@
 package com.angelomoroni.kotlintexteditor.dao
 
+import android.content.Context
 import android.os.Environment
 import com.angelomoroni.kotlintexteditor.models.Note
 import com.google.gson.Gson
@@ -32,4 +33,17 @@ fun getListoFromExternalStorage(): Array<Note>? {
 
 fun getNote(readText: String): Note {
     return Gson().fromJson(readText,Note::class.java)
+}
+
+
+fun saveNote(n:Note): Observable<Note> {
+    return Observable.defer{ Observable.just(saveNoteOnExternalStorage(n))}
+}
+
+fun saveNoteOnExternalStorage(n: Note): Note {
+    var folder : File = File(Environment.getExternalStorageDirectory().getAbsoluteFile(), NOTE_STORAGE)
+    var file : File = File(folder.absolutePath,n.title)
+    file.writeText(Gson().toJson(n))
+
+    return n
 }
