@@ -18,7 +18,10 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
+import com.angelomoroni.kotlintexteditor.dao.getListNote
 import com.angelomoroni.kotlintexteditor.models.*
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -63,13 +66,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if(checkSelfPermission( Manifest.permission.READ_EXTERNAL_STORAGE)
+        if(checkSelfPermission( Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED){
-            if(shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)){
+            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                  //show a message to explain because it's importat get this permission
             }else{
                 //show permission
-                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),READ_STORAGE_PERMISSION_CODE)
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),READ_STORAGE_PERMISSION_CODE)
             }
         }else{
             //call list of note
@@ -92,7 +95,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadListOfNote() {
-
+        getListNote().
+                subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+                {n -> noteAdapter.add(n)},
+                { e -> toast("Error"); e.printStackTrace() },
+                {toast("List is Loaded"); noteAdapter.notifyDataSetChanged()}
+        )
     }
 
 
