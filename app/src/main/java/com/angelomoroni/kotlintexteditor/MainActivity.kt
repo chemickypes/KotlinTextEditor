@@ -24,7 +24,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     var noteAdapter : NoteAdapter = NoteAdapter(getFakeNoteList(),
-            {n: Note -> toast(n.title)
+            {n: Note ->
                 updateNote(n)})
 
     override fun onCreate(savedInstanceState: Bundle?) {
