@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                             { e -> toast("Error"); e.printStackTrace() },
                             {
                                 noteAdapter.notifyDataSetChanged();
-                                snack(getString(R.string.empty_list), { createNote() }, "ADD NOTE")
+                                if(noteAdapter.itemCount == 0)snack(getString(R.string.empty_list), { createNote() }, "ADD NOTE")
                             }
                     )
         }
