@@ -24,6 +24,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
 import com.angelomoroni.kotlintexteditor.dao.getListNote
+import com.angelomoroni.kotlintexteditor.dao.removeNoteDAO
 import com.angelomoroni.kotlintexteditor.dao.saveNote
 import com.angelomoroni.kotlintexteditor.dao.saveNotes
 import com.angelomoroni.kotlintexteditor.models.*
@@ -35,7 +36,9 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     val FILE_PREFERENCES  = "file_preferences"
-    var noteAdapter : NoteAdapter = NoteAdapter({n: Note -> updateNote(n)})
+    var noteAdapter : NoteAdapter = NoteAdapter({n: Note -> updateNote(n)},
+            {n: Note -> removeNote(n)})
+
 
     val sharedpreference :SharedPreferences by lazy {
         this.getSharedPreferences(FILE_PREFERENCES, Context.MODE_PRIVATE)
@@ -217,6 +220,26 @@ class MainActivity : AppCompatActivity() {
 
         alertDialogBuilder.create().show()
     }*/
+
+    private fun removeNote(n: Note): Boolean {
+        var s :Snackbar = Snackbar.make(fab,R.string.want_remove_note,Snackbar.LENGTH_LONG)
+        s.setAction(R.string.remove_note,{
+            noteAdapter.remove(n)
+            removeNoteDAO(n)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe (
+                { b : Boolean -> snack(getString(if(b) R.string.note_deleted else R.string.note_not_deleted))},
+                { e -> e.printStackTrace(); snack(getString(R.string.note_not_deleted))},
+                {noteAdapter.notifyDataSetChanged()}
+            )
+        })
+
+        s.show()
+
+        return true;
+
+    }
 
     fun updateNote(n : Note){
         var i : Intent = Intent(this,NoteActivity::class.java)

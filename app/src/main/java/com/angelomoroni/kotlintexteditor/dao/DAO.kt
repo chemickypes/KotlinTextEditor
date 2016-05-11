@@ -42,6 +42,20 @@ fun saveNote(n:Note): Observable<Note> {
     return Observable.defer{ Observable.just(saveNoteOnExternalStorage(n))}
 }
 
+fun removeNoteDAO(n: Note) : Observable<Boolean>{
+    return Observable.defer {
+        Observable.just(removeNoteFromExternaStorage(n))
+    }
+}
+
+fun removeNoteFromExternaStorage(n: Note): Boolean {
+    var folder : File = File(Environment.getExternalStorageDirectory().getAbsoluteFile(), NOTE_STORAGE)
+    folder.mkdirs()
+    var an = folder.absolutePath + File.separator + n.title;
+    var file : File = File(an)
+    return file.delete()
+}
+
 fun saveNotes(l: ArrayList<Note?>) : Observable<Boolean>{
     return Observable.defer {
         for ( n in l){

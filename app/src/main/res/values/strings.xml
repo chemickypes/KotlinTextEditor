@@ -9,5 +9,10 @@
     <string name="note_saved">Note saved!</string>
     <string name="error_note_saved">Error! Note not saved!</string>
     <string name="errore_update_list_note">Error in Update list of note!</string>
+    <string name="want_remove_note">Do you want to delete note?</string>
+    <string name="remove_note">REMOVE</string>
+    <string name="note_deleted">Note deleted!</string>
+    <string name="note_not_deleted">Error! Note notdeleted!</string>
+
 
 </resources>
