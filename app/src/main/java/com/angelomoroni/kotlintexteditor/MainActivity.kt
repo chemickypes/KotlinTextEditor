@@ -89,6 +89,10 @@ class MainActivity : AppCompatActivity() {
 
             save(n);
 
+        }else if(resultCode == DELETE_NOTE_CODE
+                && requestCode == NOTE_DETAIL_ACTIVITY_REQUEST){
+            var n : Note = data?.getParcelableExtra<Note>(NOTE_KEY) as Note
+            removeNote(n)
         }
     }
 
@@ -142,19 +146,19 @@ class MainActivity : AppCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .filter { n : Note? -> n != null }
                     .subscribe(
-                            { n -> noteAdapter.add(n); if(n?.id == -1L) listNoteWithoutId.add(n)},
+                            { n -> noteAdapter.add(n); },
                             { e -> toast("Error"); e.printStackTrace() },
                             {
                                 noteAdapter.notifyDataSetChanged();
                                 if(noteAdapter.itemCount == 0)snack(getString(R.string.empty_list), { createNote() }, "ADD NOTE")
 
-                                saveNoteWithoutId();
+                                //saveNoteWithoutId();
                             }
                     )
         }
     }
 
-    private fun saveNoteWithoutId() {
+    /*private fun saveNoteWithoutId() {
         Log.d("MainActivity","note to update")
         for( n in listNoteWithoutId){
             n?.id = noteid
@@ -165,7 +169,7 @@ class MainActivity : AppCompatActivity() {
         .subscribeOn(Schedulers.newThread())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe({b -> if(!b) snack(getString(R.string.errore_update_list_note))},{e -> e.printStackTrace()})
-    }
+    }*/
 
 
     /*fun getFakeNoteList() : ArrayList<Note>{
