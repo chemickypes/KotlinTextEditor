@@ -4,11 +4,17 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import com.angelomoroni.kotlintexteditor.dao.removeNoteDAO
+import com.angelomoroni.kotlintexteditor.models.DELETE_NOTE_CODE
 import com.angelomoroni.kotlintexteditor.models.NOTE_KEY
 import com.angelomoroni.kotlintexteditor.models.Note
 import kotlinx.android.synthetic.main.activity_note.*
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 
 class NoteActivity : AppCompatActivity() {
 
@@ -46,9 +52,45 @@ class NoteActivity : AppCompatActivity() {
             setResult(Activity.RESULT_CANCELED)
             finish()
             return true
+        }else if(id == R.id.action_delete){
+            deleteNote();
+            return true
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteNote() {
+
+        if(note?.id == -1L){
+            finish()
+        }else {
+
+            var s: Snackbar = Snackbar.make(contentPanel, R.string.want_remove_note, Snackbar.LENGTH_LONG)
+            s.setAction(R.string.remove_note, {
+                removeNoteDAO(note as Note)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe (
+                                { b: Boolean ->
+                                    if (b) {
+                                        var intent: Intent = Intent()
+                                        intent.putExtra(NOTE_KEY, note)
+
+                                        setResult(DELETE_NOTE_CODE, intent);
+                                        finish()
+                                    } else {
+                                        snack(getString(R.string.note_not_deleted))
+                                    }
+                                },
+                                { e -> e.printStackTrace(); snack(getString(R.string.note_not_deleted)) }
+                        )
+            })
+
+            s.show()
+        }
+
+
     }
 
     private fun saveNote() {
@@ -66,5 +108,10 @@ class NoteActivity : AppCompatActivity() {
     override fun onBackPressed() {
         setResult(Activity.RESULT_CANCELED)
         super.onBackPressed()
+    }
+
+    fun AppCompatActivity.snack(message: String, action: (v: View)  -> Unit = {}, actionName: String = ""){
+        Snackbar.make(contentPanel,message,Snackbar.LENGTH_LONG).
+                setAction(actionName,action).show()
     }
 }
