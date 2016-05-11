@@ -62,28 +62,33 @@ class NoteActivity : AppCompatActivity() {
 
     private fun deleteNote() {
 
-        var s : Snackbar = Snackbar.make(contentPanel,R.string.want_remove_note, Snackbar.LENGTH_LONG)
-        s.setAction(R.string.remove_note,{
-            removeNoteDAO(note as Note)
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe (
-                            { b : Boolean ->
-                                if(b){
-                                    var intent : Intent = Intent()
-                                    intent.putExtra(NOTE_KEY,note)
+        if(note?.id == -1L){
+            finish()
+        }else {
 
-                                    setResult(DELETE_NOTE_CODE,intent);
-                                    finish()
-                                }else{
-                                    snack(getString( R.string.note_not_deleted))
-                                }
-                            },
-                            { e -> e.printStackTrace(); snack(getString(R.string.note_not_deleted))}
-                    )
-        })
+            var s: Snackbar = Snackbar.make(contentPanel, R.string.want_remove_note, Snackbar.LENGTH_LONG)
+            s.setAction(R.string.remove_note, {
+                removeNoteDAO(note as Note)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe (
+                                { b: Boolean ->
+                                    if (b) {
+                                        var intent: Intent = Intent()
+                                        intent.putExtra(NOTE_KEY, note)
 
-        s.show()
+                                        setResult(DELETE_NOTE_CODE, intent);
+                                        finish()
+                                    } else {
+                                        snack(getString(R.string.note_not_deleted))
+                                    }
+                                },
+                                { e -> e.printStackTrace(); snack(getString(R.string.note_not_deleted)) }
+                        )
+            })
+
+            s.show()
+        }
 
 
     }
