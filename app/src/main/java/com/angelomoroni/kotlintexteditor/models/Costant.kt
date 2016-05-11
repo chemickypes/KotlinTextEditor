@@ -7,3 +7,5 @@ package com.angelomoroni.kotlintexteditor.models
 val NOTE_DETAIL_ACTIVITY : String = "note_Detail_activity"
 val NOTE_DETAIL_ACTIVITY_REQUEST : Int = 1001
 val NOTE_KEY : String = "note"
+
+val DELETE_NOTE_CODE : Int = 102

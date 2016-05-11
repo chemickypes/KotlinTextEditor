@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import com.angelomoroni.kotlintexteditor.models.DELETE_NOTE_CODE
 import com.angelomoroni.kotlintexteditor.models.NOTE_KEY
 import com.angelomoroni.kotlintexteditor.models.Note
 import kotlinx.android.synthetic.main.activity_note.*
@@ -46,9 +47,21 @@ class NoteActivity : AppCompatActivity() {
             setResult(Activity.RESULT_CANCELED)
             finish()
             return true
+        }else if(id == R.id.action_delete){
+            deleteNote();
+            return true
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteNote() {
+
+        var intent : Intent = Intent()
+        intent.putExtra(NOTE_KEY,note)
+
+        setResult(DELETE_NOTE_CODE,intent);
+        finish()
     }
 
     private fun saveNote() {
