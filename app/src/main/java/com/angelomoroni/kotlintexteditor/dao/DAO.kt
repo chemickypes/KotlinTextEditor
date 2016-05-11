@@ -69,7 +69,7 @@ fun saveNotes(l: ArrayList<Note?>) : Observable<Boolean>{
 fun saveNoteOnExternalStorage(n: Note): Note {
     var folder : File = File(Environment.getExternalStorageDirectory().getAbsoluteFile(), NOTE_STORAGE)
     folder.mkdirs()
-    var an = folder.absolutePath + File.separator + n.title;
+    var an = folder.absolutePath + File.separator + n.id;
     var file : File = File(an)
     if(!file.exists()){
         file.createNewFile()
