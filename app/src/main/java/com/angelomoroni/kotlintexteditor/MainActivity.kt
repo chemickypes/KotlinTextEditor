@@ -92,7 +92,8 @@ class MainActivity : AppCompatActivity() {
         }else if(resultCode == DELETE_NOTE_CODE
                 && requestCode == NOTE_DETAIL_ACTIVITY_REQUEST){
             var n : Note = data?.getParcelableExtra<Note>(NOTE_KEY) as Note
-            removeNote(n)
+            noteAdapter.remove(n)
+            noteAdapter.notifyDataSetChanged()
         }
     }
 
