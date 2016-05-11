@@ -6,6 +6,7 @@ import android.util.Log
 import com.angelomoroni.kotlintexteditor.models.Note
 import com.google.gson.Gson
 import rx.Observable
+import java.io.DataOutput
 import java.io.File
 import java.util.*
 
@@ -33,7 +34,10 @@ fun getListoFromExternalStorage(): Array<Note?>? {
     return listNote;
 }
 
+val TAG: String? = "DAO"
+
 fun getNote(readText: String): Note {
+    Log.d(TAG,readText)
     return Gson().fromJson(readText,Note::class.java)
 }
 
@@ -51,7 +55,7 @@ fun removeNoteDAO(n: Note) : Observable<Boolean>{
 fun removeNoteFromExternaStorage(n: Note): Boolean {
     var folder : File = File(Environment.getExternalStorageDirectory().getAbsoluteFile(), NOTE_STORAGE)
     folder.mkdirs()
-    var an = folder.absolutePath + File.separator + n.title;
+    var an = folder.absolutePath + File.separator + n.id;
     var file : File = File(an)
     return file.delete()
 }

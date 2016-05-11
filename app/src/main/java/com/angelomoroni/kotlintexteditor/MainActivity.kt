@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     private val IDS: String? = "IDS_KEY"
     var noteid: Long
         get() {
-            return sharedpreference.getLong(IDS,-1)
+            return sharedpreference.getLong(IDS,0)
         }
         set(value){
             sharedpreference.edit().putLong(IDS,value).apply()
