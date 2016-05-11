@@ -13,7 +13,8 @@ import java.util.*
 /**
  * Created by angelomoroni on 08/05/16.
  */
-class NoteAdapter (val itemClick : (Note) -> Unit,val items : ArrayList<Note> = ArrayList())
+class NoteAdapter (val itemClick : (Note) -> Unit,
+                   val longItemClick : ((Note) -> Boolean)? = null , val items : ArrayList<Note> = ArrayList())
 : RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
 
 
@@ -24,14 +25,15 @@ class NoteAdapter (val itemClick : (Note) -> Unit,val items : ArrayList<Note> = 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder? {
         var view = LayoutInflater.from(parent?.context)
                 .inflate(R.layout.note_item_row,parent,false);
-        return ViewHolder(view,itemClick)
+        return ViewHolder(view,itemClick,longItemClick)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    class ViewHolder(itemView: View?, val itemClick: (Note) -> Unit) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView: View?, val itemClick: (Note) -> Unit,
+                     val longItemClick : ((Note) -> Boolean)?) : RecyclerView.ViewHolder(itemView){
 
 
         fun bind(note : Note){
@@ -39,6 +41,8 @@ class NoteAdapter (val itemClick : (Note) -> Unit,val items : ArrayList<Note> = 
                 itemView.text.text = note.title
                 itemView.date.text = FormatDate.getSubTitleRow(note.lastModTime)
                 itemView.setOnClickListener { itemClick(this) }
+                if(longItemClick != null)itemView.setOnLongClickListener {
+                    (longItemClick as (Note) -> Boolean) (this)  }
             }
         }
     }
