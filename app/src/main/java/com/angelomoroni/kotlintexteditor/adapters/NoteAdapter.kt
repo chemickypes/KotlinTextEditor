@@ -61,4 +61,8 @@ class NoteAdapter (val itemClick : (Note) -> Unit,
             }
         }
     }
+
+    fun remove(n: Note) {
+        items.remove(n)
+    }
 }

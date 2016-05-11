@@ -224,12 +224,14 @@ class MainActivity : AppCompatActivity() {
     private fun removeNote(n: Note): Boolean {
         var s :Snackbar = Snackbar.make(fab,R.string.want_remove_note,Snackbar.LENGTH_LONG)
         s.setAction(R.string.remove_note,{
+            noteAdapter.remove(n)
             removeNoteDAO(n)
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe (
                 { b : Boolean -> snack(getString(if(b) R.string.note_deleted else R.string.note_not_deleted))},
-                { e -> e.printStackTrace(); snack(getString(R.string.note_not_deleted))}
+                { e -> e.printStackTrace(); snack(getString(R.string.note_not_deleted))},
+                {noteAdapter.notifyDataSetChanged()}
             )
         })
 
