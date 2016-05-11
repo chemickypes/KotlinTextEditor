@@ -8,5 +8,6 @@
     <string name="empty_list">Empty list! Click here to add first note!</string>
     <string name="note_saved">Note saved!</string>
     <string name="error_note_saved">Error! Note not saved!</string>
+    <string name="errore_update_list_note">Error in Update list of note!</string>
 
 </resources>

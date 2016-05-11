@@ -3,8 +3,10 @@ package com.angelomoroni.kotlintexteditor
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -15,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -22,6 +25,7 @@ import android.widget.Toast
 import com.angelomoroni.kotlintexteditor.adapters.NoteAdapter
 import com.angelomoroni.kotlintexteditor.dao.getListNote
 import com.angelomoroni.kotlintexteditor.dao.saveNote
+import com.angelomoroni.kotlintexteditor.dao.saveNotes
 import com.angelomoroni.kotlintexteditor.models.*
 import kotlinx.android.synthetic.main.activity_main.*
 import rx.android.schedulers.AndroidSchedulers
@@ -30,7 +34,22 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    val FILE_PREFERENCES  = "file_preferences"
     var noteAdapter : NoteAdapter = NoteAdapter({n: Note -> updateNote(n)})
+
+    val sharedpreference :SharedPreferences by lazy {
+        this.getSharedPreferences(FILE_PREFERENCES, Context.MODE_PRIVATE)
+    }
+
+    private val IDS: String? = "IDS_KEY"
+    var noteid: Long
+        get() {
+            return sharedpreference.getLong(IDS,-1)
+        }
+        set(value){
+            sharedpreference.edit().putLong(IDS,value).apply()
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +75,9 @@ class MainActivity : AppCompatActivity() {
         if(resultCode == Activity.RESULT_OK
         && requestCode == NOTE_DETAIL_ACTIVITY_REQUEST){
             var n : Note = data?.getParcelableExtra<Note>(NOTE_KEY) as Note
-            if (n.id == -1){
+            if (n.id == -1L){
+                n.id = noteid;
+                noteid += 1;
                 noteAdapter.add(n)
             }else{
                 noteAdapter.replace(n)
@@ -109,6 +130,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    var listNoteWithoutId: ArrayList<Note?> = ArrayList();
+
     private fun loadListOfNote() {
         if(noteAdapter.itemCount == 0) {
             getListNote().
@@ -116,18 +139,33 @@ class MainActivity : AppCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .filter { n : Note? -> n != null }
                     .subscribe(
-                            { n -> noteAdapter.add(n) },
+                            { n -> noteAdapter.add(n); if(n?.id == -1L) listNoteWithoutId.add(n)},
                             { e -> toast("Error"); e.printStackTrace() },
                             {
                                 noteAdapter.notifyDataSetChanged();
                                 if(noteAdapter.itemCount == 0)snack(getString(R.string.empty_list), { createNote() }, "ADD NOTE")
+
+                                saveNoteWithoutId();
                             }
                     )
         }
     }
 
+    private fun saveNoteWithoutId() {
+        Log.d("MainActivity","note to update")
+        for( n in listNoteWithoutId){
+            n?.id = noteid
+            noteid += 1
+        }
 
-    fun getFakeNoteList() : ArrayList<Note>{
+        saveNotes(listNoteWithoutId)
+        .subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe({b -> if(!b) snack(getString(R.string.errore_update_list_note))},{e -> e.printStackTrace()})
+    }
+
+
+    /*fun getFakeNoteList() : ArrayList<Note>{
         var list = ArrayList<Note>();
         for (i in 1..5){
             var n: Note = Note("Note Title ${i}","Body text ${i}")
@@ -136,7 +174,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         return list
-    }
+    }*/
 
     fun AppCompatActivity.snack(message: String,action: (v: View)  -> Unit = {},actionName: String = ""){
         Snackbar.make(fab,message,Snackbar.LENGTH_LONG).
@@ -155,15 +193,15 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(i,NOTE_DETAIL_ACTIVITY_REQUEST)
     }
 
-    fun createNote(title1: Editable?,title2:String){
+   /* fun createNote(title1: Editable?,title2:String){
         var ti :String = if(title1!!.length > 0) title1.toString() else title2
         var n : Note = Note(ti)
         var i : Intent = Intent(this,NoteActivity::class.java)
         i.putExtra(NOTE_KEY,n)
         startActivityForResult(i,NOTE_DETAIL_ACTIVITY_REQUEST)
-    }
+    }*/
 
-    private fun openInputDialog() {
+   /* private fun openInputDialog() {
         var v = LayoutInflater.from(this).inflate(R.layout.input_dialog_layout,null);
         var alertDialogBuilder : AlertDialog.Builder = AlertDialog.Builder(this,R.style.DialogTheme)
         alertDialogBuilder.setView(v)
@@ -178,7 +216,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         alertDialogBuilder.create().show()
-    }
+    }*/
 
     fun updateNote(n : Note){
         var i : Intent = Intent(this,NoteActivity::class.java)

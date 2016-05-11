@@ -44,7 +44,7 @@ class NoteAdapter (val itemClick : (Note) -> Unit,val items : ArrayList<Note> = 
     }
 
     fun add(n: Note?) {
-        n?.id = itemCount
+        //n?.id = itemCount
         items.add(n as Note)
     }
 

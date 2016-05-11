@@ -7,6 +7,7 @@ import com.angelomoroni.kotlintexteditor.models.Note
 import com.google.gson.Gson
 import rx.Observable
 import java.io.File
+import java.util.*
 
 /**
  * Created by angelomoroni on 10/05/16.
@@ -39,6 +40,16 @@ fun getNote(readText: String): Note {
 
 fun saveNote(n:Note): Observable<Note> {
     return Observable.defer{ Observable.just(saveNoteOnExternalStorage(n))}
+}
+
+fun saveNotes(l: ArrayList<Note?>) : Observable<Boolean>{
+    return Observable.defer {
+        for ( n in l){
+            saveNoteOnExternalStorage(n as Note);
+        };
+
+        Observable.just(true)
+    }
 }
 
 fun saveNoteOnExternalStorage(n: Note): Note {
