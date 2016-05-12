@@ -3,9 +3,10 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/midnight_dark</item>
+        <item name="colorPrimaryDark">@color/midnight_darker</item>
+        <item name="colorAccent">@color/blue</item>
+        <item name="android:fontFamily">monospace</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,4 +18,52 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TextStyle" >
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TextStyle.Body">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextStyle.SubTitleRow">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/midnight</item>
+    </style>
+
+    <style name="TextStyle.Title">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextStyle.SubTitle">
+        <item name="android:textColor">@color/orange</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="DialogTheme" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:background">@color/midnight_dark</item>
+    </style>
+
+
+    <style name="ToolbarStyle" >
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textColor">@color/sand_dark</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="TextStyle.Title.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="TextStyle.Body.EditText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:padding">16dp</item>
+    </style>
 </resources>

@@ -1,4 +1,18 @@
 <resources>
-    <string name="app_name">KotlinTextEditor</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">K TextEditor</string>
+    <string name="action_settings">Save</string>
+    <string name="choose_title">Choose note title</string>
+    <string name="create_note">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="body_hint">Body…</string>
+    <string name="empty_list">Empty list! Click here to add first note!</string>
+    <string name="note_saved">Note saved!</string>
+    <string name="error_note_saved">Error! Note not saved!</string>
+    <string name="errore_update_list_note">Error in Update list of note!</string>
+    <string name="want_remove_note">Do you want to delete note?</string>
+    <string name="remove_note">REMOVE</string>
+    <string name="note_deleted">Note deleted!</string>
+    <string name="note_not_deleted">Error! Note notdeleted!</string>
+
+
 </resources>
