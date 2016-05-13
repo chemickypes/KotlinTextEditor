@@ -27,6 +27,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -126,13 +127,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if(checkSelfPermission( Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED){
-            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                  //show a message to explain because it's importat get this permission
             }else{
                 //show permission
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),READ_STORAGE_PERMISSION_CODE)
+                ActivityCompat.requestPermissions(this,arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),READ_STORAGE_PERMISSION_CODE)
             }
         }else{
             //call list of note
